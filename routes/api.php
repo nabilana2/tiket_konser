@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TiketController;
+use App\Http\Controllers\TransaksiController;
+
 
 
 /*
@@ -25,8 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::get('/tikets', [BookController::class, 'index']);
 // Route::get('/tikets/{id}', [BookController::class, 'show']);
-// Route::post('register', [AuthController::class, 'register']);
-// Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('login', [AuthController::class, 'login']);
 
 //Route::post('/books', [BookController::class, 'store']);
 //Route::put('/books/{id}', [BookController::class, 'update']);
@@ -38,4 +42,10 @@ Route::resource('tikets', TiketController::class)->except(
         ['create', 'edit']
     
 );
+
+Route::resource('transaksi', TransaksiController::class)->except(
+    ['create', 'edit']
+
+);
+
 

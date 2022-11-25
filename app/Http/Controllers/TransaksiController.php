@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Tiket;
+use App\Models\Transaksi;
 
-class TiketController extends Controller
+
+class TransaksiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class TiketController extends Controller
      */
     public function index()
     {
-        $tiket = Tiket::all();
-        return $tiket ;
+        $transaksi = Transaksi::all();
+        return $transaksi ;
     }
 
     /**
@@ -36,9 +37,9 @@ class TiketController extends Controller
      */
     public function store(Request $request)
     {
-        $table = Tiket::create([
+        $table = Transaksi::create([
             "nama" => $request->nama,
-            "no_pesanan" => $request->no_pesanan,
+            "no_booking" => $request->no_booking,
             "section" => $request->section,
             "harga" => $request->harga,
             "date_of_issue" => $request->date_of_issue
@@ -46,7 +47,7 @@ class TiketController extends Controller
 
         return response()->json([
             'success' => 201,
-            'message' => 'data berhasil disimpan',
+            'message' => 'transaksi berhasil dilakukan',
             'data' => $table
         ], 201);
     }
@@ -59,11 +60,11 @@ class TiketController extends Controller
      */
     public function show($id)
     {
-        $tiket = tiket::find($id);
-        if ($tiket) {
+        $transaksi = transaksi::find($id);
+        if ($transaksi) {
             return response()->json([
                 'status' => 200,
-                'data' => $tiket
+                'data' => $transaksi
             ], 200);
         }else{
             return response()->json([
@@ -95,17 +96,17 @@ class TiketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tiket = tiket::find($id);
-        if($tiket){
-            $tiket->nama = $request->nama? $request->nama : $tiket->nama;
-            $tiket->no_pesanan = $request->no_pesanan? $request->no_pesanan: $tiket->no_pesanan;
-            $tiket->section = $request->section ? $request->section : $tiket->section;
-            $tiket->harga = $request->harga ? $request->harga : $tiket->harga;
-            $tiket->date_of_issue= $request->date_of_issue ? $request->date_of_issue : $book->date_of_issue;
-            $tiket->save();
+        $transaksi = transaksi::find($id);
+        if($transaksi){
+            $transaksi->nama = $request->nama? $request->nama : $transaksi->nama;
+            $transaksi->no_booking= $request->no_booking? $request->no_booking: $transaksi->no_booking;
+            $transaksi->section = $request->section ? $request->section : $transaksi->section;
+            $transaksi->harga = $request->harga ? $request->harga : $transaksi->harga;
+            $transaksi->date_of_issue= $request->date_of_issue ? $request->date_of_issue : $book->date_of_issue;
+            $transaksi->save();
             return response()->json([
                 'status' => 200,
-                'data' => $tiket
+                'data' => $transaksi
             ], 200);
         }else{
             return response()->json([
@@ -123,12 +124,12 @@ class TiketController extends Controller
      */
     public function destroy($id)
     {
-        $tiket = tiket::where('id',$id)->first();
-        if($tiket){
-            $tiket->delete();
+        $transaksi = transaksi::where('id',$id)->first();
+        if($transaksi){
+            $transaksi->delete();
             return response()->json([
                 'status' =>200,
-                'data' =>$tiket
+                'data' =>$transaksi
             ],200);
         }else{
             return response ()->json([
