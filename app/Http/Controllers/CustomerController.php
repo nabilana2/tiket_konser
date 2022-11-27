@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transaksi;
+use App\Models\Customer;
 
-
-class TransaksiController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,8 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksi = Transaksi::all();
-        return $transaksi ;
+        $customer = Customer::all();
+        return $customer ;
     }
 
     /**
@@ -37,17 +36,16 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $table = Transaksi::create([
+        $table = Customer::create([
             "nama" => $request->nama,
-            "no_booking" => $request->no_booking,
-            "section" => $request->section,
+            "metode_membayar" => $request->metode_membayar,
             "harga" => $request->harga,
             "date_of_issue" => $request->date_of_issue
         ]);
 
         return response()->json([
             'success' => 201,
-            'message' => 'transaksi berhasil dilakukan',
+            'message' => 'data berhasil dimasukan',
             'data' => $table
         ], 201);
     }
@@ -60,11 +58,11 @@ class TransaksiController extends Controller
      */
     public function show($id)
     {
-        $transaksi = transaksi::find($id);
-        if ($transaksi) {
+        $customer = customer::find($id);
+        if ($customer) {
             return response()->json([
                 'status' => 200,
-                'data' => $transaksi
+                'data' => $customer
             ], 200);
         }else{
             return response()->json([
@@ -96,17 +94,16 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $transaksi = transaksi::find($id);
-        if($transaksi){
-            $transaksi->nama = $request->nama? $request->nama : $transaksi->nama;
-            $transaksi->no_booking= $request->no_booking? $request->no_booking: $transaksi->no_booking;
-            $transaksi->section = $request->section ? $request->section : $transaksi->section;
-            $transaksi->harga = $request->harga ? $request->harga : $transaksi->harga;
-            $transaksi->date_of_issue= $request->date_of_issue ? $request->date_of_issue : $transaksi->date_of_issue;
-            $transaksi->save();
+        $customer = customer::find($id);
+        if($customer){
+            $customer->nama = $request->nama? $request->nama : $customer->nama;
+            $customer->metode_membayar= $request->no_booking? $request->no_booking: $customer->no_booking;
+            $customer->harga = $request->harga ? $request->harga : $customer->harga;
+            $customer->date_of_issue= $request->date_of_issue ? $request->date_of_issue : $customer->date_of_issue;
+            $customer->save();
             return response()->json([
                 'status' => 200,
-                'data' => $transaksi
+                'data' => $customer
             ], 200);
         }else{
             return response()->json([
@@ -124,12 +121,12 @@ class TransaksiController extends Controller
      */
     public function destroy($id)
     {
-        $transaksi = transaksi::where('id',$id)->first();
-        if($transaksi){
-            $transaksi->delete();
+        $customer = transaksi::where('id',$id)->first();
+        if($customer){
+            $customer->delete();
             return response()->json([
                 'status' =>200,
-                'data' =>$transaksi
+                'data' =>$customer
             ],200);
         }else{
             return response ()->json([

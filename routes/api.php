@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TiketController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\CustomerController;
 
 
 
@@ -19,18 +20,17 @@ use App\Http\Controllers\TransaksiController;
 |
 */
 
+//Public Routes
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Public Routes
-// Route::get('me', [AuthController::class, 'me']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// Route::get('/tikets', [BookController::class, 'index']);
-// Route::get('/tikets/{id}', [BookController::class, 'show']);
-Route::post('register', [AuthController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout']);
-Route::post('login', [AuthController::class, 'login']);
+Route::get('me', [AuthController::class, 'me']);
+Route::get('/tikets', [BookController::class, 'index']);
+Route::get('/tikets/{id}', [BookController::class, 'show']);
 
 //Route::post('/books', [BookController::class, 'store']);
 //Route::put('/books/{id}', [BookController::class, 'update']);
@@ -38,14 +38,15 @@ Route::post('login', [AuthController::class, 'login']);
 
 //protected routes
 
-Route::resource('tikets', TiketController::class)->except(
-        ['create', 'edit']
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::resource('book', BookController::class)->except(
+        ['create', 'edit', 'index', 'show']
+    );
     
-);
-
-Route::resource('transaksi', TransaksiController::class)->except(
-    ['create', 'edit']
-
-);
-
+    Route::resource('authors', AuthorController::class)->except(
+        ['create', 'edit']
+    );
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
