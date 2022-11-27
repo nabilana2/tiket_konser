@@ -14,7 +14,7 @@ class TiketController extends Controller
      */
     public function index()
     {
-        $tiket = Tiket::all();
+        $tiket = tikets::all();
         return $tiket ;
     }
 
@@ -36,18 +36,26 @@ class TiketController extends Controller
      */
     public function store(Request $request)
     {
-        $table = Tiket::create([
-            "nama" => $request->nama,
-            "no_pesanan" => $request->no_pesanan,
-            "section" => $request->section,
-            "harga" => $request->harga,
-            "date_of_issue" => $request->date_of_issue
-        ]);
+        // $table = tiket::create([
+        //     "nama" => $request->nama,
+        //     "no_pesanan" => $request->no_pesanan,
+        //     "section" => $request->section,
+        //     "harga" => $request->harga,
+        //     "date_of_issue" => $request->date_of_issue
+        // ]);
+
+        $tiket = new tikets();
+        $tiket->nama = $request->input('nama');
+        $tiket->no_pesanan = $request->input("no_pesanan");
+        $tiket->section = $request->input("section");
+        $tiket->harga = $request->input("harga");
+        $tiket->date_of_issue = $request->input("date_of_issue");
+        $tiket->save();
 
         return response()->json([
             'success' => 201,
             'message' => 'data berhasil disimpan',
-            'data' => $table
+            'data' => $tiket
         ], 201);
     }
 
@@ -59,7 +67,7 @@ class TiketController extends Controller
      */
     public function show($id)
     {
-        $tiket = tiket::find($id);
+        $tiket = tikets::find($id);
         if ($tiket) {
             return response()->json([
                 'status' => 200,
@@ -95,7 +103,7 @@ class TiketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tiket = tiket::find($id);
+        $tiket = tikets::find($id);
         if($tiket){
             $tiket->nama = $request->nama? $request->nama : $tiket->nama;
             $tiket->no_pesanan = $request->no_pesanan? $request->no_pesanan: $tiket->no_pesanan;
@@ -123,7 +131,7 @@ class TiketController extends Controller
      */
     public function destroy($id)
     {
-        $tiket = tiket::where('id',$id)->first();
+        $tiket = tikets::where('id',$id)->first();
         if($tiket){
             $tiket->delete();
             return response()->json([
